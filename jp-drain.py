@@ -1,7 +1,11 @@
 import pandas as pd
+import os
 from datetime import datetime, timedelta
 
-csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKudW5uPchJRnXo7Gh-9ZO29kbk7nMUG7yYjxywmkNodJfv9eNZ-YY4elgXqCqhkUd5otVtk1lVGCY/pub?gid=1738129283&single=true&output=csv"
+csv_url = os.environ.get('CSV_URL')
+if not csv_url:
+    raise ValueError("CSV_URL environment variable is not set. Please set it in GitHub Secrets.")
+
 df = pd.read_csv(csv_url)
 df = df.rename(columns={
     'date': 'datetime', 

@@ -26,6 +26,9 @@ jobs:
           pip install pandas
 
       - name: Run data script
+        env:
+          CSV_URL: ${{ secrets.CSV_URL }}
+
         run: python jp-drain.py
 
       - name: Commit and push changes
