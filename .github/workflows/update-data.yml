@@ -1,0 +1,36 @@
+name: Run Data Script on Sheet Update
+
+on:
+  repository_dispatch:
+    types: [sheet_updated] # This is the custom event we will send from Google Sheets
+  workflow_dispatch:       # Allows you to also trigger it manually from the GitHub website
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # Required so the action can commit the generated CSV back to your repo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas
+
+      - name: Run data script
+        run: python python/calculator/jp-drain.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add python/calculator/summary_table.csv
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update summary table from Google Sheets" && git push)
