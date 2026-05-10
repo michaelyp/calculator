@@ -26,11 +26,11 @@ jobs:
           pip install pandas
 
       - name: Run data script
-        run: python python/calculator/jp-drain.py
+        run: python jp-drain.py
 
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add python/calculator/summary_table.csv
+          git add summary_table.csv
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update summary table from Google Sheets" && git push)
