@@ -3,6 +3,11 @@ from datetime import datetime, timedelta
 
 csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKudW5uPchJRnXo7Gh-9ZO29kbk7nMUG7yYjxywmkNodJfv9eNZ-YY4elgXqCqhkUd5otVtk1lVGCY/pub?gid=1738129283&single=true&output=csv"
 df = pd.read_csv(csv_url)
+df = df.rename(columns={
+    'date': 'datetime', 
+    'date time': 'timestamp', 
+    'volume in ml': 'volume'
+})
 df['timestamp'] = pd.to_datetime(df['timestamp'], format='%d/%m/%Y %H:%M:%S')
 
 daily_volumes = {}
