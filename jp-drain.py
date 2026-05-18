@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import math
 from datetime import datetime, timedelta
 
 csv_url = os.environ.get('CSV_URL')
@@ -53,7 +54,7 @@ summary_data = []
 for date_str in daily_volumes:
     summary_data.append({
         'Date': date_str,
-        'Total Volume (ml)': daily_volumes[date_str],
+        'Total Volume (ml)': math.ceil(daily_volumes[date_str]),
         'Color': ', '.join(sorted(daily_colors[date_str])),
         'Smell': ', '.join(sorted(daily_smells[date_str]))
     })
